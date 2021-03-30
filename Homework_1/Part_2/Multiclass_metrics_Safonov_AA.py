@@ -57,5 +57,10 @@ def lift_score(y_true, y_predict, percent=default_value()):
     confusion_feature_matrix = confusion_matrix(y_true[:int(y_true.shape[0] * percent)],
                                                 matrix_to_vector(y_predict, percent), n_features)
     precision = precision_score(y_true, y_predict, percent)
-    result = precision * y_true.shape[0] / np.trace(confusion_feature_matrix)
+    TP = confusion_feature_matrix.diagonal()
+    FN = np.array([((np.delete(np.delete(confusion_feature_matrix, feature, axis=0), feature, axis=1)).sum() - 
+                     (np.delete(np.delete(confusion_feature_matrix, feature, axis=0), feature, axis=1)).diagonal().sum()) 
+                    for feature in range(n_features)])
+    print(y_true.shape[0])
+    result = precision * y_true.shape[0] / (TP + FN)
     return result
