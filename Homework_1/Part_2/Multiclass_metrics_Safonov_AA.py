@@ -10,7 +10,7 @@ import numpy as np
 
 
 def default_value():
-    return round(np.random.uniform(0.5, 1), 2)
+    return 0.5
 
 
 def matrix_to_vector(targets, percent):
