@@ -1,6 +1,10 @@
 # На вход подаются массив y_true длины n, содержащий "метки" классов и
 # матрица y_predict размером n на m, содержащая в каждой строке "1", означающую предсказание соответствующей
 # метки класса и находящуюся на соответствующем метке индексе элемента этой строки
+# Так как задание было некорректно сформулировано, то я реализовал percent следующим образом: percent - значение, 
+# заключенное в полуинтервале (0, 1] и означающее часть выборки от генеральной, к которой и будут применены соответствующие метрики  
+# На более конкретные вопросы готов ответить лично в Telegram
+# Andrew Safonov
 
 import numpy as np
 
@@ -61,5 +65,5 @@ def lift_score(y_true, y_predict, percent=default_value()):
     FN = np.array([((np.delete(np.delete(confusion_feature_matrix, feature, axis=0), feature, axis=1)).sum() - 
                      (np.delete(np.delete(confusion_feature_matrix, feature, axis=0), feature, axis=1)).diagonal().sum()) 
                     for feature in range(n_features)])
-    result = precision * y_true.shape[0] / (TP + FN)
+    result = precision * int(y_true.shape[0] * percent) / (TP + FN)
     return result
